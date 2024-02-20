@@ -508,7 +508,7 @@ class navigator:
                 mpd_mod = re.sub("_w[0-9]+", "_w9999999999", mpd_mod)
                 mpd_mod = re.sub("_pd[0-9]+", '_pd'+str(inmsplus)+'', mpd_mod)
             except ValueError:
-                duration_seconds = 2277
+                duration_seconds = duration
                 
                 hours = duration_seconds // 3600
                 minutes = (duration_seconds % 3600) // 60
