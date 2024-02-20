@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="Megjelenítés">
+    	<setting id="searchSort" type="enum" label="Találatok rendezése" values="Relevancia|Adásnap szerint csökkenő|Adásnap szerint növekvő|Cím (A-Z)|Cím (Z-A)|Dátum szerint csökkenő|Dátum szerint növekvő" default="0" />
+    	<setting id="hitsPerPage" type="slider" label="Találatok száma oldalanként" default="25" range="25,5,50" option="int" />
+    	<setting id="showSubtitle" type="bool" label="Feliratok automatikus megjelenítése (amennyiben elérhető)" default="false" />
+    </category>
+</settings>
