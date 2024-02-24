@@ -1,2 +1,6 @@
+[B]1.0.3[/B]
+- ssl kezelése by Mr Dini
+[B]1.0.2[/B]
+- int(duration) hozzáadva (hanganyagokhoz)
 [B]1.0.1[/B]
 - Első verzió - Windows-on nincs lejátszás
