@@ -123,7 +123,7 @@ class navigator:
 
         import requests
         
-        response = requests.post(url, headers=headers)
+        response = requests.post(url, headers=headers, verify=False)
         
         data = response.json()
         print(f'\n{data}\n')
@@ -242,7 +242,7 @@ class navigator:
 
         import requests
         
-        response = requests.post(url, headers=headers)
+        response = requests.post(url, headers=headers, verify=False)
         
         data = response.json()
         print(f'\n{data}\n')
@@ -344,7 +344,7 @@ class navigator:
 
         import requests
         
-        response = requests.post(decoded_url, headers=headers)
+        response = requests.post(decoded_url, headers=headers, verify=False)
         
         data = response.json()
         print(f'\n{data}\n')
@@ -444,7 +444,7 @@ class navigator:
         import requests
         import re
         
-        resp_00 = requests.get(f'{base_url}/id/{doc_id}/', headers=headers).text
+        resp_00 = requests.get(f'{base_url}/id/{doc_id}/', headers=headers, verify=False).text
         
         try:
             custom_data = re.findall(r',\"widevine\":{\"customData\":\"(.*)\",\"certificateUri\"', str(resp_00))[0].strip()
@@ -462,12 +462,12 @@ class navigator:
             'np': '',
         }
         
-        resp_01 = requests.head(base_mpd, params=params, headers=headers, allow_redirects=True)
+        resp_01 = requests.head(base_mpd, params=params, headers=headers, allow_redirects=True, verify=False)
         mpd_url_part1 = resp_01.url
         
         import requests
         
-        resp_02 = requests.get(mpd_url_part1, headers=headers).text
+        resp_02 = requests.get(mpd_url_part1, headers=headers, verify=False).text
         
         try:
             mpd_sample = re.findall(r'<Location>(.*)</Location>', str(resp_02))[0].strip()
@@ -480,7 +480,7 @@ class navigator:
                 'vid': f'{doc_id}',
             }
             
-            resp_x = requests.post('https://nava.hu/wp-content/plugins/hms-nava/interface/getVideoStatus.php', data=data).text
+            resp_x = requests.post('https://nava.hu/wp-content/plugins/hms-nava/interface/getVideoStatus.php', data=data, verify=False).text
             
             if re.search('ON_TAPE', resp_x):
                 notification = xbmcgui.Dialog()
@@ -508,7 +508,7 @@ class navigator:
                 mpd_mod = re.sub("_w[0-9]+", "_w9999999999", mpd_mod)
                 mpd_mod = re.sub("_pd[0-9]+", '_pd'+str(inmsplus)+'', mpd_mod)
             except ValueError:
-                duration_seconds = duration
+                duration_seconds = int(duration)
                 
                 hours = duration_seconds // 3600
                 minutes = (duration_seconds % 3600) // 60
@@ -541,6 +541,8 @@ class navigator:
             play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
         
         play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
+        play_item.setProperty('inputstream.adaptive.stream_headers', 'verifypeer=false')
+        play_item.setProperty('inputstream.adaptive.manifest_headers', 'verifypeer=false')
         
         license_headers = {
             'customdata': custom_data,
