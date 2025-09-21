@@ -1,6 +1,8 @@
 # plugin.video.nava.hu
 ![Logo](icon.png)
 
+1.0.4 - lejátszás előkészítése Windowson
+
 1.0.3 - ssl kezelése by Mr Dini
 
 1.0.2 - int(duration) hozzáadva (hanganyagokhoz)

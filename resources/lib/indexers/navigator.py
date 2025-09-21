@@ -32,6 +32,10 @@ addonFanart = xbmcaddon.Addon().getAddonInfo('fanart')
 
 KODI_VERSION_MAJOR = int(xbmc.getInfoLabel('System.BuildVersion').split('.')[0])
 
+is_windows = sys.platform.startswith('win')
+if is_windows:
+    from . import nava_windows_playback
+
 version = xbmcaddon.Addon().getAddonInfo('version')
 
 addon_id = xbmcaddon.Addon().getAddonInfo('id')
@@ -532,31 +536,34 @@ class navigator:
         if subtitle is not None and show_subtitle == 'true':
             play_item.setSubtitles([subtitle])
         
-        play_item.setProperty('inputstream', 'inputstream.adaptive')
-        
-        if KODI_VERSION_MAJOR == 19:
-            play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+        if is_windows:
+            nava_windows_playback.handle_windows_playback(play_item, mpd_mod, custom_data)
+        else:
+            play_item.setProperty('inputstream', 'inputstream.adaptive')
             
-        elif KODI_VERSION_MAJOR == 20:
-            play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
-        
-        play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
-        play_item.setProperty('inputstream.adaptive.stream_headers', 'verifypeer=false')
-        play_item.setProperty('inputstream.adaptive.manifest_headers', 'verifypeer=false')
-        
-        license_headers = {
-            'customdata': custom_data,
-        }
-        
-        from urllib.parse import urlencode
-        
-        license_config = {
-            'license_server_url': 'https://wv-keyos.licensekeyserver.com/',
-            'headers': urlencode(license_headers),
-            'post_data': 'R{SSM}',
-            'response_data':'',
-        }
-        play_item.setProperty('inputstream.adaptive.license_key', '|'.join(license_config.values()))
+            if KODI_VERSION_MAJOR == 19:
+                play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+                
+            elif KODI_VERSION_MAJOR == 20:
+                play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+            
+            play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
+            play_item.setProperty('inputstream.adaptive.stream_headers', 'verifypeer=false')
+            play_item.setProperty('inputstream.adaptive.manifest_headers', 'verifypeer=false')
+            
+            license_headers = {
+                'customdata': custom_data,
+            }
+            
+            from urllib.parse import urlencode
+            
+            license_config = {
+                'license_server_url': 'https://wv-keyos.licensekeyserver.com/',
+                'headers': urlencode(license_headers),
+                'post_data': 'R{SSM}',
+                'response_data':'',
+            }
+            play_item.setProperty('inputstream.adaptive.license_key', '|'.join(license_config.values()))
         
         xbmc.Player().play(mpd_mod, play_item)
 

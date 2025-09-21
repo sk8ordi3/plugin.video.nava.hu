@@ -1,3 +1,5 @@
+[B]1.0.4[/B]
+- lejátszás előkészítése Windowson
 [B]1.0.3[/B]
 - ssl kezelése by Mr Dini
 [B]1.0.2[/B]
