@@ -72,4 +72,4 @@ elif action == 'search':
     navigator.navigator().doSearch(url)
 
 elif action == 'search_id':
-    navigator.navigator().doSearch_2(url)    
+    navigator.navigator().doSearch_2(url)

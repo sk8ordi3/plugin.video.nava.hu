@@ -32,9 +32,26 @@ addonFanart = xbmcaddon.Addon().getAddonInfo('fanart')
 
 KODI_VERSION_MAJOR = int(xbmc.getInfoLabel('System.BuildVersion').split('.')[0])
 
-is_windows = sys.platform.startswith('win')
-if is_windows:
-    from . import nava_windows_playback
+def check_kodi_platform():
+    try:
+        build_version = xbmc.getInfoLabel('System.BuildVersion')
+        is_v21_plus = (build_version and build_version.split('.')[0].isdigit() and int(build_version.split('.')[0]) >= 21)
+        is_windows = False
+        is_coreelec = False
+        is_libreelec = False
+        if is_v21_plus:
+            is_windows = xbmc.getCondVisibility('System.Platform.Windows')
+            is_coreelec = xbmc.getCondVisibility('System.HasAddon(service.coreelec.settings)')
+            if not is_coreelec:
+                is_coreelec = "CoreELEC" in xbmc.getInfoLabel('System.OSVersionInfo')
+            is_libreelec = xbmc.getCondVisibility('System.HasAddon(service.libreelec.settings)')
+            if not is_libreelec:
+                is_libreelec = "LibreELEC" in xbmc.getInfoLabel('System.OSVersionInfo')
+        return is_v21_plus, is_windows, is_coreelec, is_libreelec
+    except Exception as e:
+        xbmc.log(f"Hiba a platform ellenőrzése során: {e}", xbmc.LOGINFO)
+        return False, False, False, False
+is_v21_plus, is_windows, is_coreelec, is_libreelec = check_kodi_platform()
 
 version = xbmcaddon.Addon().getAddonInfo('version')
 
@@ -535,8 +552,9 @@ class navigator:
         
         if subtitle is not None and show_subtitle == 'true':
             play_item.setSubtitles([subtitle])
-        
-        if is_windows:
+
+        if is_v21_plus and (is_windows or is_coreelec or is_libreelec):
+            from . import nava_windows_playback
             nava_windows_playback.handle_windows_playback(play_item, mpd_mod, custom_data)
         else:
             play_item.setProperty('inputstream', 'inputstream.adaptive')

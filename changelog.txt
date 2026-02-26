@@ -1,3 +1,5 @@
+[B]1.0.5[/B]
+- lejátszás előkészítése (v21 Omega, v22 Piers): Windows, CoreELEC, LibreELEC
 [B]1.0.4[/B]
 - lejátszás előkészítése Windowson
 [B]1.0.3[/B]

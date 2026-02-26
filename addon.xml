@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.nava.hu" name="NAVA" version="1.0.4" provider-name="heg">
+<addon id="plugin.video.nava.hu" name="NAVA" version="1.0.5" provider-name="heg">
 	<requires>
 		<import addon="script.module.beautifulsoup4" version="4.6.2"/>
 		<import addon="script.module.requests" version="2.22.0"/>
@@ -16,6 +16,7 @@
 		<language>hu</language>
 		<platform>all</platform>
 		<news> 
+			1.0.5 - lejátszás előkészítése (v21 Omega, v22 Piers): Windows, CoreELEC, LibreELEC
 			1.0.4 - lejátszás előkészítése Windowson
 			1.0.3 - ssl kezelése by Mr Dini
 			1.0.2 - int(duration) hozzáadva (hanganyagokhoz)
