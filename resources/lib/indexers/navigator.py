@@ -35,23 +35,18 @@ KODI_VERSION_MAJOR = int(xbmc.getInfoLabel('System.BuildVersion').split('.')[0])
 def check_kodi_platform():
     try:
         build_version = xbmc.getInfoLabel('System.BuildVersion')
+        os_info = xbmc.getInfoLabel('System.OSVersionInfo')
         is_v21_plus = (build_version and build_version.split('.')[0].isdigit() and int(build_version.split('.')[0]) >= 21)
-        is_windows = False
-        is_coreelec = False
-        is_libreelec = False
-        if is_v21_plus:
-            is_windows = xbmc.getCondVisibility('System.Platform.Windows')
-            is_coreelec = xbmc.getCondVisibility('System.HasAddon(service.coreelec.settings)')
-            if not is_coreelec:
-                is_coreelec = "CoreELEC" in xbmc.getInfoLabel('System.OSVersionInfo')
-            is_libreelec = xbmc.getCondVisibility('System.HasAddon(service.libreelec.settings)')
-            if not is_libreelec:
-                is_libreelec = "LibreELEC" in xbmc.getInfoLabel('System.OSVersionInfo')
-        return is_v21_plus, is_windows, is_coreelec, is_libreelec
+        is_android = xbmc.getCondVisibility('System.Platform.Android')
+        if is_v21_plus and not is_android:
+            known_linux = "CoreELEC" in os_info or "LibreELEC" in os_info or xbmc.getCondVisibility('System.Platform.Windows')
+            #if not known_linux:
+                #xbmc.log(f"ismeretlen platform: {os_info}", xbmc.LOGINFO)
+        return is_v21_plus, is_android
     except Exception as e:
         xbmc.log(f"Hiba a platform ellenőrzése során: {e}", xbmc.LOGINFO)
-        return False, False, False, False
-is_v21_plus, is_windows, is_coreelec, is_libreelec = check_kodi_platform()
+        return False, True
+is_v21_plus, is_android = check_kodi_platform()
 
 version = xbmcaddon.Addon().getAddonInfo('version')
 
@@ -552,8 +547,7 @@ class navigator:
         
         if subtitle is not None and show_subtitle == 'true':
             play_item.setSubtitles([subtitle])
-
-        if is_v21_plus and (is_windows or is_coreelec or is_libreelec):
+        if is_v21_plus and not is_android:
             from . import nava_windows_playback
             nava_windows_playback.handle_windows_playback(play_item, mpd_mod, custom_data)
         else:

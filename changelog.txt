@@ -1,3 +1,5 @@
+[B]1.0.6[/B]
+- lejátszás fix (OSMC)
 [B]1.0.5[/B]
 - lejátszás előkészítése (v21 Omega, v22 Piers): Windows, CoreELEC, LibreELEC
 [B]1.0.4[/B]

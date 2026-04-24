@@ -1,6 +1,8 @@
 # plugin.video.nava.hu
 ![Logo](icon.png)
 
+1.0.6 - lejátszás fix (OSMC)
+
 1.0.5 - lejátszás előkészítése (v21 Omega, v22 Piers): Windows, CoreELEC, LibreELEC
 
 1.0.4 - lejátszás előkészítése Windowson
